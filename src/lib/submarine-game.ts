@@ -139,7 +139,10 @@ export class SubmarineGame {
     return submarine;
   }
 
-  private validateAllCollisions(object: THREE.Mesh): boolean {
+  private validateAllCollisions(
+    object: THREE.Mesh,
+    isPlayer?: boolean,
+  ): boolean {
     if (this.checkCollisions(object, this.player)) {
       return true;
     }
@@ -218,6 +221,14 @@ export class SubmarineGame {
         this.scene.remove(collectible);
         this.collectibles = this.collectibles.filter((c) => c !== collectible);
         this.score += config.collectiblePoints;
+      }
+    }
+
+    for (const enemy of this.enemies) {
+      if (this.checkCollisions(this.player, enemy)) {
+        this.gameOver = true;
+        alert(`Game Over! Final Score: ${this.score}`);
+        break;
       }
     }
   }
